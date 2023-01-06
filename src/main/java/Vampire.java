@@ -1,8 +1,8 @@
-public class Zombie extends Monster {
-    public static String scream = "Raaaauuughhhh! ";
+public class Vampire extends Monster {
+    public static String scream = "Sssssssssssssss! ";
 
-    public Zombie(String name) {
-        super(name + " the Zombie", 5);
+    public Vampire(String name) {
+        super(name + " the Vampire", 7);
 
     }
 
@@ -10,6 +10,7 @@ public class Zombie extends Monster {
     public void growl() {
         System.out.print(scream);
         super.growl();
+
     }
 
     public void growl(boolean isLoud) {
@@ -23,7 +24,8 @@ public class Zombie extends Monster {
 
     @Override
     public void attack() {
-        this.growl();
+        this.growl(true);
         super.attack();
+        System.out.println("And hid in the dark...");
     }
 }
