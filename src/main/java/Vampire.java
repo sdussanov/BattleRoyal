@@ -2,7 +2,7 @@ public class Vampire extends Monster {
     public static String scream = "Sssssssssssssss! ";
 
     public Vampire(String name) {
-        super(name + " the Vampire", 7);
+        super(name + " the Vampire",20, 15);
 
     }
 
@@ -23,9 +23,10 @@ public class Vampire extends Monster {
     }
 
     @Override
-    public void attack() {
+    public void attack(Monster monster) {
         this.growl(true);
-        super.attack();
+        monster.damage(this.getForce());
+        System.out.printf("Monster %s attacked with damage %d another monster %s!\n", this.getName(), this.getForce(), monster.getName());
         System.out.println("And hid in the dark...");
     }
 }
