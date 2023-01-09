@@ -2,7 +2,7 @@ public class Zombie extends Monster {
     public static String scream = "Raaaauuughhhh! ";
 
     public Zombie(String name) {
-        super(name + " the Zombie", 30, 10);
+        super(name, 30, 10);
 
     }
 
@@ -22,9 +22,9 @@ public class Zombie extends Monster {
     }
 
     @Override
-    public void attack(Monster monster) {
+    public void attack(Entity entity) {
         this.growl();
-        monster.damage(this.getForce());
-        System.out.printf("Monster %s attacked with damage %d another monster %s!\n", this.getName(), this.getForce(), monster.getName());
+        System.out.printf("%s the Zombie attacked with damage %d another %s %s!\n", this.getName(), this.getForce(), entity.getClass().getName(), entity.getName());
+        entity.damage(this.getForce());
     }
 }

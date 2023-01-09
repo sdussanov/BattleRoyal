@@ -2,17 +2,16 @@ import java.util.Random;
 
 public class Battle {
     private final static int MAX = 5;
-
-    private final Monster[] arrMonsters;
+    private final Entity[] arrEntity;
     private int counter = 0;
 
     public Battle() {
-        arrMonsters = new Monster[MAX];
+        arrEntity = new Monster[MAX];
     }
 
-    public void add(Monster monster) {
+    public void add(Entity entity) {
         if (counter < MAX) {
-            arrMonsters[counter++] = monster;
+            arrEntity[counter++] = entity;
         } else {
             System.out.println("No more monsters!");
         }
@@ -22,20 +21,20 @@ public class Battle {
         run();
     }
 
-    public void run(){
+    public void run() {
         Random random = new Random();
         int destroyed = 0;
-        Monster fighter = null;
-        while (destroyed != counter - 1){
-            fighter = arrMonsters[random.nextInt(counter)];
-            Monster victim = arrMonsters[random.nextInt(counter)];
-            //find non destroyed Fighter and his victim
-            while (fighter == null || victim == null || fighter == victim || victim.isDestroyed() || fighter.isDestroyed()) {
-                victim = arrMonsters[random.nextInt(counter)];
-                fighter = arrMonsters[random.nextInt(counter)];
+        Entity fighter = null;
+        while (destroyed != counter - 1) {
+            fighter = arrEntity[random.nextInt(counter)];
+            Entity victim = arrEntity[random.nextInt(counter)];
+
+            while (victim == null || fighter == victim || !(fighter instanceof Fightable) || victim.isDestroyed() || fighter.isDestroyed()) {
+                victim = arrEntity[random.nextInt(counter)];
+                fighter = arrEntity[random.nextInt(counter)];
             }
-            fighter.attack(victim);
-            if (victim.isDestroyed()){
+            ((Fightable) fighter).attack(victim);
+            if (victim.isDestroyed()) {
                 victim = null;
                 destroyed++;
             }
