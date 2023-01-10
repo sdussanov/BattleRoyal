@@ -3,6 +3,12 @@ abstract class Entity {
     protected int hp;
     protected boolean destroyed;
 
+    Entity(String name, int hp){
+        this.name = name;
+        this.hp = hp;
+        this.destroyed = false;
+    }
+
     protected void damage(int hp) {
         this.hp -= hp;
         System.out.printf("%s %s current Health = %d HP\n", this.getClass().getName(), name, this.hp);

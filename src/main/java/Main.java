@@ -9,16 +9,31 @@ public class Main {
 //        zombie2.attack();
 //        zombie2.growl();
 
-        Battle battle = new Battle();
-        battle.add(new Zombie("Steve"));
-        battle.add(new Zombie("Bob"));
-        battle.add(new Zombie("Frank"));
-        battle.add(new Vampire("Eva"));
-        battle.add(new Vampire("Alice"));
+//        Battle battle = new Battle();
+//        battle.add(new Zombie("Steve"));
+//        battle.add(new Zombie("Bob"));
+//        battle.add(new Zombie("Frank"));
+//        battle.add(new Vampire("Eva"));
+//        battle.add(new Vampire("Alice"));
+//
+//        battle.add(new Zombie("Paul"));
+//        battle.add(new Vampire("Jane"));
+//
+//        battle.start();
 
-        battle.add(new Zombie("Paul"));
-        battle.add(new Vampire("Jane"));
 
-        battle.start();
+        Player player = new Player("Tourist");
+        Player.Backpack pb = player.backpack;
+        System.out.println(pb);
+        player.take("rope");
+        player.take("bottle");
+        player.take("flower");
+        System.out.println(pb);
+        player.take("ball");
+        player.take("toy");
+        player.take("bow");
+        System.out.println(pb);
+        player.take("knife");
+        System.out.println(pb);
     }
 }

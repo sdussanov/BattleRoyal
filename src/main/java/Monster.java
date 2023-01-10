@@ -1,12 +1,10 @@
 abstract class Monster extends Entity implements Fightable{
-    private final int force;
+    private int force;
 
 
     public Monster(String name, int hp, int force) {
-        super.name = name;
-        super.hp = hp;
+        super(name, hp);
         this.force = force;
-        this.destroyed = false;
         System.out.printf("Monster %s was created!\n", name);
     }
 
