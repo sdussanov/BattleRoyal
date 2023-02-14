@@ -1,16 +1,12 @@
-public class Vampire extends Monster {
-    public static String scream = "Sssssssssssssss! ";
+public class Vampire extends Character {
+    public static String scream = "Sssssssssssssss!";
 
-    public Vampire(String name) {
-        super(name,20, 15);
-
+    public Vampire(String name, int health, int attack, int defence, int mana, int strength, int agility, int intelligence, int exp, int gold) {
+        super(name, health, attack, defence, mana, strength, agility, intelligence, exp, gold);
     }
 
-    @Override
     public void growl() {
         System.out.print(scream);
-        super.growl();
-
     }
 
     public void growl(boolean isLoud) {
@@ -18,15 +14,15 @@ public class Vampire extends Monster {
             this.growl();
         } else {
             System.out.print(scream.toUpperCase());
-            super.growl();
         }
     }
 
     @Override
-    public void attack(Entity entity) {
-        this.growl(true);
-        System.out.printf("%s the Vampire attacked with damage %d another %s %s!\n", this.getName(), this.getForce(), entity.getClass().getName(), entity.getName());
-        System.out.println("And hid in the dark...");
-        entity.damage(this.getForce());
+    public int attack(Character enemy) {
+        this.growl();
+        int damage = Math.max(0, this.getAttack() - enemy.getDefense());
+        enemy.setHealth(enemy.getHealth() - damage);
+        System.out.println(this.getName() + " attacks " + enemy.getName() + " for " + damage + " damage!");
+        return damage;
     }
 }

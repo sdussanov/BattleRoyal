@@ -1,46 +1,61 @@
-import java.util.Random;
-
 public class Battle {
-    private final static int MAX = 5;
-    private final Entity[] arrEntity;
-    private int counter = 0;
 
-    public Battle() {
-        arrEntity = new Monster[MAX];
+    public void fight(Character human, Character monster, Main.FightCallback fightCallback) {
+        Runnable runnable = () -> {
+            int turn = 1;
+            boolean isFightEnded = false;
+
+            while (!isFightEnded) {
+                System.out.println("----Turn: " + turn + "----");
+                if (turn++ % 2 != 0) {
+                    isFightEnded = makeHit(monster, human, fightCallback);
+                } else {
+                    isFightEnded = makeHit(human, monster, fightCallback);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
-    public void add(Entity entity) {
-        if (counter < MAX) {
-            arrEntity[counter++] = entity;
+    private Boolean makeHit(Character defender, Character attacker, Main.FightCallback fightCallback) {
+        int damage;
+        int random = (int) (Math.random() * 10);
+
+        if (random % 2 == 0) {
+            damage = attacker.attack(defender);
         } else {
-            System.out.println("No more monsters!");
-        }
-    }
-
-    public void start() {
-        run();
-    }
-
-    public void run() {
-        Random random = new Random();
-        int destroyed = 0;
-        Entity fighter = null;
-        while (destroyed != counter - 1) {
-            fighter = arrEntity[random.nextInt(counter)];
-            Entity victim = arrEntity[random.nextInt(counter)];
-
-            while (victim == null || fighter == victim || !(fighter instanceof Fightable) || victim.isDestroyed() || fighter.isDestroyed()) {
-                victim = arrEntity[random.nextInt(counter)];
-                fighter = arrEntity[random.nextInt(counter)];
-            }
-            ((Fightable) fighter).attack(victim);
-            if (victim.isDestroyed()) {
-                victim = null;
-                destroyed++;
-            }
+            damage = attacker.attack(defender);
         }
 
-        System.out.println("The Great Battle is finished and winner is " + fighter);
+        if (damage != 0 && random % 2 > 0) {
+            System.out.println(String.format("%s Hit with critical %d damage!", attacker.getName(), damage));
+            System.out.println(String.format("%s has left %d health points...", defender.getName(), defender.getHealth()));
+        } else if (damage != 0 && random % 2 == 0) {
+            System.out.println(String.format("%s Hit with %d damage!", attacker.getName(), damage));
+            System.out.println(String.format("%s has left %d health points...", defender.getName(), defender.getHealth()));
+        } else {
+            System.out.println(String.format("%s missed!", attacker.getName()));
+        }
 
+
+        if (defender.getHealth() <= 0 && defender instanceof Human) {
+            System.out.println("Sorry, you died...");
+            fightCallback.fightLost();
+            return true;
+        } else if (defender.getHealth() <= 0) {
+            System.out.println(String.format("You won! You've got %d exp and %d gold!", defender.getExp(), defender.getGold()));
+            attacker.setExp(attacker.getExp() + defender.getExp());
+            attacker.setGold(attacker.getGold() + defender.getGold());
+            fightCallback.fightWin();
+            return true;
+        } else {
+            return false;
+        }
     }
 }
